@@ -20,6 +20,7 @@ namespace reportFile
 
     class reportFileAnalayzer
     {
+        const int ARRAY_SIZE = 100;
         static string FILEPATH = "reports.txt";
 
 
@@ -191,15 +192,16 @@ namespace reportFile
 
             string[]? x = LoadFile();
 
-            ReportType[] reportTypeArrey;
-            Status[] StatusArrey;
-            string[] UnitNameArrey;
-            int[] PriorityArrey;
-            double[] ScoreArrey;
+            string[] UnitNameArrey = new string[ARRAY_SIZE];
+            ReportType[] reportTypeArrey = new ReportType[ARRAY_SIZE];
+            int[] PriorityArrey = new int[ARRAY_SIZE];
+            double[] ScoreArrey = new double[ARRAY_SIZE];
+            Status[] StatusArrey = new Status[ARRAY_SIZE];
 
-            //ParsingReports();
 
-            ProcessReports(x);
+            ProcessReports(x, UnitNameArrey, reportTypeArrey, PriorityArrey, ScoreArrey, StatusArrey);
+
+            
 
         }
     }
