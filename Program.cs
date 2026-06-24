@@ -46,7 +46,7 @@ namespace reportFile
                 }
             }
 
-            catch (EndOfStreamException) // catch (FileNotFoundException)
+            catch (FileNotFoundException)
             {
                 Console.WriteLine($"Error: File {FILEPATH} is not found."); // TODO: change the file path for only the actaualy file name and not the full path.
                 return null;
@@ -57,7 +57,7 @@ namespace reportFile
 
         }
 
-        static void ArreyPrint(string[] data)
+        static void ArrayPrint(string[] data)
         {
             for (int i = 0; i < data.Length; i++)
             {
@@ -66,8 +66,10 @@ namespace reportFile
         }
         
 
-        static void ProcessReports(string[] allLinesReport)
+        static void ProcessReports(string[] allLinesReport, string[] unitArr, ReportType[] reportArr, int[] priorityArr, double[] scoreArr, Status[] statusArr )
         {
+            int sumValidRecords = 0; // also used to know the index of last report exist
+
             for (int i = 0; i < allLinesReport.Length; i++)
             {
                 string Unit = "";
@@ -127,21 +129,50 @@ namespace reportFile
 
                 if (!isVAlid)
                 {
+                    invalidRecords += 1;
                     Console.WriteLine(invalidRecords);
                     continue;
                 }
 
-                invalidRecords += 1;
+                
 
-                //addToArrays(Unit, Report, Priority, Score, status);
+                addToArray(Unit, unitArr, sumValidRecords);
+                addToArray(Report, reportArr, sumValidRecords);
+                addToArray(Priority, priorityArr, sumValidRecords);
+                addToArray(Score, scoreArr, sumValidRecords);
+                addToArray(status, statusArr, sumValidRecords);
+
+                sumValidRecords += 1;
+
                 Console.WriteLine($"Unit {Unit}, Report {Report}, Priority {Priority} , Score {Score}, status {status}");
-                 
-
-
+                Console.WriteLine($"Valid record processed.");
 
                 // UNDONE:
             }
         }
+
+
+        static void addToArray(string unit, string[] unitArr, int index)
+        {
+            unitArr[index] = unit;
+        }
+        static void addToArray(ReportType report, ReportType[] reportArr, int index)
+        {
+            reportArr[index] = report;
+        }
+        static void addToArray(int priority, int[] priorityArr, int index)
+        {
+            priorityArr[index] = priority;
+        }
+        static void addToArray(double score, double[] scoreArr, int index)
+        {
+            scoreArr[index] = score;
+        }
+        static void addToArray(Status status, Status[] statusArr, int index)
+        {
+            statusArr[index] = status;
+        }
+
 
         static string[] DeleteSpaces(string[] oneReport)
         {
