@@ -364,6 +364,27 @@ namespace reportFile
         }
 
 
+        static void DisplayHighestPriorityApproved(string[] unitArr, ReportType[] reportArr, int[] priorityArr, double[] scoreArr, Status[] statusArr, int validRecords)
+        {
+            int highestPriority = FindHighestPriority(priorityArr, validRecords);
+
+            Console.WriteLine("=== Display Highest Priority Approved ===\n");
+            
+            for (int i = 0; i < validRecords; i++)
+            {
+                if (priorityArr[i] == highestPriority && statusArr[i] == Status.approved)
+                {
+                    string reportRecord = getRecordByIndex(i, unitArr, reportArr, priorityArr, scoreArr, statusArr);
+                    Console.WriteLine(reportRecord + "\n");
+                }
+            }
+            Console.WriteLine("===============================\n");
+
+        }
+
+
+
+
         static void Main()
         {
             DebugPrinting("hello from main");
@@ -405,6 +426,12 @@ namespace reportFile
 
             Console.WriteLine("============================");
             DisplayTypeCounts(reportTypeArray, validRecords);
+
+
+            Console.WriteLine("============================");
+            DisplayHighestPriorityApproved(UnitNameArray, reportTypeArray, PriorityArray, ScoreArray, StatusArray, validRecords);            
+
+
         }
     }
 }
