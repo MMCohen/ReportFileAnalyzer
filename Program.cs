@@ -223,13 +223,13 @@ namespace reportFile
                 acc += scoreArr[i];
             }
             return (acc / validRecords);
-        }       
+        }
 
         static double FindMaxScore(double[] scoreArr, int validRecords)
         {
             double maxScore = scoreArr[0];
 
-            for (int i = 0; i<validRecords; i++)
+            for (int i = 0; i < validRecords; i++)
             {
                 if (scoreArr[i] > maxScore)
                 {
@@ -239,7 +239,21 @@ namespace reportFile
             return maxScore;
         }
 
-static void Main()
+        static double FindMinScore(double[] scoreArr, int validRecords)
+        {
+            double minScore = scoreArr[0];
+
+            for (int i = 0; i < validRecords; i++)
+            {
+                if (scoreArr[i] < minScore)
+                {
+                    minScore = scoreArr[i];
+                }
+            }
+            return minScore;
+        }
+
+        static void Main()
         {
             DebugPrinting("hello from main");
 
@@ -263,8 +277,8 @@ static void Main()
             double average = CalculateAverage(ScoreArrey, validRecords);
             Console.WriteLine($"{average:F2}");
 
-            double maxScore = FindMaxScore(ScoreArrey, validRecords);
-            Console.WriteLine(maxScore);
+            double minscore = FindMinScore(ScoreArrey, validRecords);
+            Console.WriteLine(minscore);
 
 
         }
