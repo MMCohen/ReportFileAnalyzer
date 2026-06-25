@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Text;
 
@@ -58,18 +59,46 @@ namespace reportFile
 
         }
 
-        static void ArrayPrint(string[] data)
+        static void ArrayPrint(string[] data, int validRecords)
         {
-            for (int i = 0; i < data.Length; i++)
+            for (int i = 0; i < validRecords; i++)
             {
                 Console.WriteLine(data[i]);
             }
         }
-        
-
-        static void ProcessReports(string[] allLinesReport, string[] unitArr, ReportType[] reportArr, int[] priorityArr, double[] scoreArr, Status[] statusArr )
+        static void ArrayPrint(int[] data, int validRecords)
         {
-            int sumValidRecords = 0; // also used to know the index of last report exist
+            for (int i = 0; i < validRecords; i++)
+            {
+                Console.WriteLine(data[i]);
+            }
+        }
+        static void ArrayPrint(double[] data, int validRecords)
+        {
+            for (int i = 0; i < validRecords; i++)
+            {
+                Console.WriteLine(data[i]);
+            }
+        }
+        static void ArrayPrint(ReportType[] data, int validRecords)
+        {
+            for (int i = 0; i < validRecords; i++)
+            {
+                Console.WriteLine(data[i]);
+            }
+        }
+        static void ArrayPrint(Status[] data, int validRecords)
+        {
+            for (int i = 0; i < validRecords; i++)
+            {
+                Console.WriteLine(data[i]);
+            }
+        }
+
+
+        static void ProcessReports(string[] allLinesReport, ref int validRecords, string[] unitArr, ReportType[] reportArr, int[] priorityArr, double[] scoreArr, Status[] statusArr )
+        {
+            //int sumValidRecords = 0; // also used to know the index of last report exist
 
             for (int i = 0; i < allLinesReport.Length; i++)
             {
@@ -104,7 +133,7 @@ namespace reportFile
                     Unit = oneLine[0];
                 }
 
-                if (!Enum.TryParse(oneLine[1].ToLower(), out Report))
+                if (!Enum.TryParse(oneLine[1].ToLower(), out Report))  // TODO: use gnoreCase: true
                 {
                     invalidRecords += "invalid ReportType. ";
                     isVAlid = false;
@@ -122,7 +151,7 @@ namespace reportFile
                     isVAlid = false;
                 }
 
-                if (!Enum.TryParse(oneLine[4].ToLower(), out status))
+                if (!Enum.TryParse(oneLine[4].ToLower(), out status)) // TODO: use gnoreCase: true
                 {
                     isVAlid = false;
                     invalidRecords += "invalid status. ";
@@ -130,20 +159,19 @@ namespace reportFile
 
                 if (!isVAlid)
                 {
-                    invalidRecords += 1;
                     Console.WriteLine(invalidRecords);
                     continue;
                 }
 
                 
 
-                addToArray(Unit, unitArr, sumValidRecords);
-                addToArray(Report, reportArr, sumValidRecords);
-                addToArray(Priority, priorityArr, sumValidRecords);
-                addToArray(Score, scoreArr, sumValidRecords);
-                addToArray(status, statusArr, sumValidRecords);
+                addToArray(Unit, unitArr, validRecords);
+                addToArray(Report, reportArr, validRecords);
+                addToArray(Priority, priorityArr, validRecords);
+                addToArray(Score, scoreArr, validRecords);
+                addToArray(status, statusArr, validRecords);
 
-                sumValidRecords += 1;
+                validRecords += 1;
 
                 Console.WriteLine($"Unit {Unit}, Report {Report}, Priority {Priority} , Score {Score}, status {status}");
                 Console.WriteLine($"Valid record processed.");
@@ -198,10 +226,34 @@ namespace reportFile
             double[] ScoreArrey = new double[ARRAY_SIZE];
             Status[] StatusArrey = new Status[ARRAY_SIZE];
 
+            int validRecords = 0;
+            int invalidRecords; // TODO: use it
 
-            ProcessReports(x, UnitNameArrey, reportTypeArrey, PriorityArrey, ScoreArrey, StatusArrey);
 
-            
+            ProcessReports(x, ref validRecords, UnitNameArrey, reportTypeArrey, PriorityArrey, ScoreArrey, StatusArrey);
+
+            Console.WriteLine("============================");
+            ArrayPrint(UnitNameArrey, validRecords);
+            Console.WriteLine("============================");
+            //ArrayPrint(reportTypeArrey, validRecords);
+            //Console.WriteLine("============================");
+            //ArrayPrint(PriorityArrey, validRecords);
+            //Console.WriteLine("============================");
+            //ArrayPrint(ScoreArrey, validRecords);
+            //Console.WriteLine("============================");
+            //ArrayPrint(StatusArrey, validRecords);
+            //Console.WriteLine("============================");
+
+            /*
+            int num = 22;
+            Console.WriteLine(UnitNameArrey[num]);
+            Console.WriteLine(reportTypeArrey[num]);
+            Console.WriteLine(PriorityArrey[num]);
+            Console.WriteLine(ScoreArrey[num]);
+            Console.WriteLine(StatusArrey[num]);
+            */
+
+
 
         }
     }
