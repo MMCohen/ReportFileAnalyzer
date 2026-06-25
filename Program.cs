@@ -225,7 +225,21 @@ namespace reportFile
             return (acc / validRecords);
         }       
 
-        static void Main()
+        static double FindMaxScore(double[] scoreArr, int validRecords)
+        {
+            double maxScore = scoreArr[0];
+
+            for (int i = 0; i<validRecords; i++)
+            {
+                if (scoreArr[i] > maxScore)
+                {
+                    maxScore = scoreArr[i];
+                }
+            }
+            return maxScore;
+        }
+
+static void Main()
         {
             DebugPrinting("hello from main");
 
@@ -249,6 +263,8 @@ namespace reportFile
             double average = CalculateAverage(ScoreArrey, validRecords);
             Console.WriteLine($"{average:F2}");
 
+            double maxScore = FindMaxScore(ScoreArrey, validRecords);
+            Console.WriteLine(maxScore);
 
 
         }
