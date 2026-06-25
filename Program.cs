@@ -349,6 +349,21 @@ namespace reportFile
         }
 
 
+
+        static string getRecordByIndex(int index, string[] unitArr, ReportType[] reportArr, int[] priorityArr, double[] scoreArr, Status[] statusArr)
+        {
+            string ReportRecord = $"""
+                unit: {unitArr[index]}. 
+                report: {reportArr[index]}.
+                priority: {priorityArr[index]}.
+                score: {scoreArr[index]}.
+                status: {statusArr[index]}.
+                """;
+
+            return ReportRecord;
+        }
+
+
         static void Main()
         {
             DebugPrinting("hello from main");
