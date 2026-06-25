@@ -257,7 +257,7 @@ namespace reportFile
         static int CountByStatus(Status[] statusArr, int validRecords, string status)
         {
             int cnt = 0;
-            
+
             for (int i = 0; i < validRecords; i++)
             {
                 if (Enum.TryParse(status, ignoreCase: true, out Status chek) && chek == statusArr[i])
@@ -267,39 +267,55 @@ namespace reportFile
             }
             return cnt;
         }
-        
 
-        
+
+        static int CountByType(ReportType[] reportArr, int validRecords, string reportString)
+        {
+            int cnt = 0;
+
+            for (int i = 0; i < validRecords; i++)
+            {
+                if (Enum.TryParse(reportString, ignoreCase: true, out ReportType chek) && chek == reportArr[i])
+                {
+                    cnt++;
+                }
+            }
+            return cnt;
+        }
+
+
         static void Main()
         {
             DebugPrinting("hello from main");
 
             string[]? x = LoadFile();
 
-            string[] UnitNameArrey = new string[ARRAY_SIZE];
-            ReportType[] reportTypeArrey = new ReportType[ARRAY_SIZE];
-            int[] PriorityArrey = new int[ARRAY_SIZE];
-            double[] ScoreArrey = new double[ARRAY_SIZE];
-            Status[] StatusArrey = new Status[ARRAY_SIZE];
+            string[] UnitNameArray = new string[ARRAY_SIZE];
+            ReportType[] reportTypeArray = new ReportType[ARRAY_SIZE];
+            int[] PriorityArray = new int[ARRAY_SIZE];
+            double[] ScoreArray = new double[ARRAY_SIZE];
+            Status[] StatusArray = new Status[ARRAY_SIZE];
 
             int validRecords = 0;
             int invalidRecords; // TODO: use it
 
 
-            ProcessReports(x, ref validRecords, UnitNameArrey, reportTypeArrey, PriorityArrey, ScoreArrey, StatusArrey);
+            ProcessReports(x, ref validRecords, UnitNameArray, reportTypeArray, PriorityArray, ScoreArray, StatusArray);
 
             Console.WriteLine("============================");
-            ArrayPrint(UnitNameArrey, validRecords);
+            ArrayPrint(UnitNameArray, validRecords);
 
-            double average = CalculateAverage(ScoreArrey, validRecords);
+            double average = CalculateAverage(ScoreArray, validRecords);
             Console.WriteLine($"{average:F2}");
 
-            double minscore = FindMinScore(ScoreArrey, validRecords);
+            double minscore = FindMinScore(ScoreArray, validRecords);
             Console.WriteLine(minscore);
 
-            int cnt_by_stat = CountByStatus(StatusArrey, validRecords, "Pending");
+            int cnt_by_stat = CountByStatus(StatusArray, validRecords, "Pending");
             Console.WriteLine("cnt_by_stat: " + cnt_by_stat);
 
+            int cnt_by_type = CountByType(reportTypeArray, validRecords, "anaLyze");
+            Console.WriteLine("cnt_by_type: " + cnt_by_type);
 
         }
     }
