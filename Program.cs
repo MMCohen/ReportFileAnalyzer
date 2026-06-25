@@ -253,6 +253,23 @@ namespace reportFile
             return minScore;
         }
 
+
+        static int CountByStatus(Status[] statusArr, int validRecords, string status)
+        {
+            int cnt = 0;
+            
+            for (int i = 0; i < validRecords; i++)
+            {
+                if (Enum.TryParse(status, ignoreCase: true, out Status chek) && chek == statusArr[i])
+                {
+                    cnt++;
+                }
+            }
+            return cnt;
+        }
+        
+
+        
         static void Main()
         {
             DebugPrinting("hello from main");
@@ -279,6 +296,9 @@ namespace reportFile
 
             double minscore = FindMinScore(ScoreArrey, validRecords);
             Console.WriteLine(minscore);
+
+            int cnt_by_stat = CountByStatus(StatusArrey, validRecords, "Pending");
+            Console.WriteLine("cnt_by_stat: " + cnt_by_stat);
 
 
         }
