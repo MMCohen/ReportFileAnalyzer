@@ -334,6 +334,21 @@ namespace reportFile
         }
 
 
+        static int FindHighestPriority(int[] priorityArr, int validRecords)
+        {
+            int highestPriority = priorityArr[0];
+
+            for (int i = 0; i < validRecords; i++)
+            {
+                if (priorityArr[i] > highestPriority)
+                {
+                    highestPriority = priorityArr[i];
+                }
+            }
+            return highestPriority;
+        }
+
+
         static void Main()
         {
             DebugPrinting("hello from main");
