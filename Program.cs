@@ -284,6 +284,19 @@ namespace reportFile
         }
 
 
+        static void DisplayBasicStatistics(double[] scoreArr, int validRecords)
+        {
+            Console.WriteLine("=== Display Basic Statistics ===\n");
+            Console.WriteLine($"Valid records: {validRecords}");
+
+            double avg = CalculateAverage(scoreArr, validRecords);
+            double max = FindMaxScore(scoreArr, validRecords);
+            double min = FindMinScore(scoreArr, validRecords);
+
+            Console.WriteLine($"Avarage score: {avg}\nMax score: {max}\nMin score: {min}");
+            Console.WriteLine("================================\n");
+        }
+
         static void Main()
         {
             DebugPrinting("hello from main");
@@ -316,6 +329,9 @@ namespace reportFile
 
             int cnt_by_type = CountByType(reportTypeArray, validRecords, "anaLyze");
             Console.WriteLine("cnt_by_type: " + cnt_by_type);
+
+            Console.WriteLine("============================");
+            DisplayBasicStatistics(ScoreArray, validRecords);
 
         }
     }
