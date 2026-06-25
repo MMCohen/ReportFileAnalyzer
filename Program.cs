@@ -317,6 +317,22 @@ namespace reportFile
         }
 
 
+        static void DisplayTypeCounts(ReportType[] reportArr, int validRecords)
+        {
+            int CollectCnt = CountByType(reportArr, validRecords, "Collect");
+            int AnalyzeCnt = CountByType(reportArr, validRecords, "Analyze");
+            int ReconCnt = CountByType(reportArr, validRecords, "Recon");
+            int IntelCnt = CountByType(reportArr, validRecords, "Intel");
+
+            Console.WriteLine("===========================");
+            Console.WriteLine("=== Display Type Counts ===");
+            Console.WriteLine("===========================\n");
+
+            Console.WriteLine($"Collect count: {CollectCnt}.\nAnalyze count: {AnalyzeCnt}.\nRecon count: {ReconCnt}.\nIntel count:{IntelCnt}\n");
+
+            Console.WriteLine("=============================\n");
+        }
+
 
         static void Main()
         {
@@ -357,6 +373,8 @@ namespace reportFile
             Console.WriteLine("============================");
             DisplayStatusCounts(StatusArray, validRecords);
 
+            Console.WriteLine("============================");
+            DisplayTypeCounts(reportTypeArray, validRecords);
         }
     }
 }
