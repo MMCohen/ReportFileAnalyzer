@@ -201,7 +201,7 @@ namespace reportFile
         {
             statusArr[index] = status;
         }
-
+        
 
         static string[] DeleteSpaces(string[] oneReport)
         {
@@ -213,6 +213,17 @@ namespace reportFile
             }
             return newReport;
         }
+
+
+        static double CalculateAverage(double[] scoreArr, int validRecords)
+        {
+            double acc = 0;
+            for (int i = 0; i < validRecords; i++)
+            {
+                acc += scoreArr[i];
+            }
+            return (acc / validRecords);
+        }       
 
         static void Main()
         {
@@ -234,24 +245,9 @@ namespace reportFile
 
             Console.WriteLine("============================");
             ArrayPrint(UnitNameArrey, validRecords);
-            Console.WriteLine("============================");
-            //ArrayPrint(reportTypeArrey, validRecords);
-            //Console.WriteLine("============================");
-            //ArrayPrint(PriorityArrey, validRecords);
-            //Console.WriteLine("============================");
-            //ArrayPrint(ScoreArrey, validRecords);
-            //Console.WriteLine("============================");
-            //ArrayPrint(StatusArrey, validRecords);
-            //Console.WriteLine("============================");
 
-            /*
-            int num = 22;
-            Console.WriteLine(UnitNameArrey[num]);
-            Console.WriteLine(reportTypeArrey[num]);
-            Console.WriteLine(PriorityArrey[num]);
-            Console.WriteLine(ScoreArrey[num]);
-            Console.WriteLine(StatusArrey[num]);
-            */
+            double average = CalculateAverage(ScoreArrey, validRecords);
+            Console.WriteLine($"{average:F2}");
 
 
 
