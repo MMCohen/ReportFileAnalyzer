@@ -286,16 +286,37 @@ namespace reportFile
 
         static void DisplayBasicStatistics(double[] scoreArr, int validRecords)
         {
-            Console.WriteLine("=== Display Basic Statistics ===\n");
+            Console.WriteLine("================================");
+            Console.WriteLine("=== Display Basic Statistics ===");
+            Console.WriteLine("================================\n");
             Console.WriteLine($"Valid records: {validRecords}");
 
             double avg = CalculateAverage(scoreArr, validRecords);
             double max = FindMaxScore(scoreArr, validRecords);
             double min = FindMinScore(scoreArr, validRecords);
 
-            Console.WriteLine($"Avarage score: {avg}\nMax score: {max}\nMin score: {min}");
+            Console.WriteLine($"Avarage score: {avg:F2}\nMax score: {max}\nMin score: {min}");
             Console.WriteLine("================================\n");
         }
+
+
+        static void DisplayStatusCounts(Status[] statusArr, int validRecords)
+        {
+
+            int pendingCnt = CountByStatus(statusArr, validRecords, "pending");
+            int approvedCnt = CountByStatus(statusArr, validRecords, "approved");
+            int rejectedCnt = CountByStatus(statusArr, validRecords, "rejected");
+
+            Console.WriteLine("=============================");
+            Console.WriteLine("=== Display Status Counts ===");
+            Console.WriteLine("=============================\n");
+
+            Console.WriteLine($"Pending count: {pendingCnt}.\napproved count: {approvedCnt}.\nRejected count: {rejectedCnt}.\n");
+
+            Console.WriteLine("=============================\n");
+        }
+
+
 
         static void Main()
         {
@@ -332,6 +353,9 @@ namespace reportFile
 
             Console.WriteLine("============================");
             DisplayBasicStatistics(ScoreArray, validRecords);
+
+            Console.WriteLine("============================");
+            DisplayStatusCounts(StatusArray, validRecords);
 
         }
     }
