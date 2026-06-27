@@ -108,7 +108,7 @@ namespace reportFile
                 double Score;
                 Status status;
 
-                string invalidRecords = "invalid records: ";
+                string invalidRecordsMessage = "invalid records: ";
                 bool isVAlid = true;
 
                 string[] oneLine = allLinesReport[i].Split(",");
@@ -125,7 +125,7 @@ namespace reportFile
                 // check that unit is not empty
                 if (oneLine[0].Length < 0)
                 {
-                    invalidRecords += "unit not enterd. ";
+                    invalidRecordsMessage += "unit not enterd. ";
                     isVAlid = false;
                 }
                 else
@@ -135,31 +135,31 @@ namespace reportFile
 
                 if (!Enum.TryParse(oneLine[1].ToLower(), out Report))  // TODO: use gnoreCase: true
                 {
-                    invalidRecords += "invalid ReportType. ";
+                    invalidRecordsMessage += "invalid ReportType. ";
                     isVAlid = false;
                 }
 
                 if (!int.TryParse(oneLine[2], out Priority) || Priority < 1 || Priority > 5)
                 {
-                    invalidRecords += "invalid Priority. ";
+                    invalidRecordsMessage += "invalid Priority. ";
                     isVAlid = false;
                 }
 
                 if (!double.TryParse(oneLine[3], out Score) || Score < 0.0 || Score > 100.0)
                 {
-                    invalidRecords += "invalid Score. ";
+                    invalidRecordsMessage += "invalid Score. ";
                     isVAlid = false;
                 }
 
                 if (!Enum.TryParse(oneLine[4].ToLower(), out status)) // TODO: use gnoreCase: true
                 {
                     isVAlid = false;
-                    invalidRecords += "invalid status. ";
+                    invalidRecordsMessage += "invalid status. ";
                 }
 
                 if (!isVAlid)
                 {
-                    Console.WriteLine(invalidRecords);
+                    Console.WriteLine(invalidRecordsMessage);
                     continue;
                 }
 
@@ -382,14 +382,108 @@ namespace reportFile
 
         }
 
+        static void DisplayAverageByPriority(int[] priorityArr, double[] scoreArr, int validRecords)
+        {
+            // 2 lists will be a much better choice, but we are not allow to use lists in this stage.
+            double priority1ScoreAcc = 0;
+            double priority2ScoreAcc = 0;
+            double priority3ScoreAcc = 0;
+            double priority4ScoreAcc = 0;
+            double priority5ScoreAcc = 0;
 
+            int priority1Cnt = 0;
+            int priority2Cnt = 0;
+            int priority3Cnt = 0;
+            int priority4Cnt = 0;
+            int priority5Cnt = 0;
+
+            for (int i = 0; i < validRecords; i++)
+            {
+                switch (priorityArr[i])
+                {
+                    case 1:
+                        priority1ScoreAcc += scoreArr[i];
+                        priority1Cnt += 1;
+                        break;
+                    case 2:
+                        priority2ScoreAcc += scoreArr[i];
+                        priority2Cnt += 1;
+                        break;
+                    case 3:
+                        priority3ScoreAcc += scoreArr[i];
+                        priority3Cnt += 1;
+                        break;
+                    case 4:
+                        priority4ScoreAcc += scoreArr[i];
+                        priority4Cnt += 1;
+                        break;
+                    case 5:
+                        priority5ScoreAcc += scoreArr[i];
+                        priority5Cnt += 1;
+                        break;
+
+
+                }
+            }
+
+            Console.WriteLine("\n===================================");
+            Console.WriteLine("=== Display Average By Priority ===");
+            Console.WriteLine("===================================\n");
+            if (priority1Cnt > 0)
+            {
+                Console.WriteLine($"priority 1 average score is: {priority1ScoreAcc / priority1Cnt}");
+            }
+            else
+            {
+                Console.WriteLine($"no reports for priority 1.");
+            }
+
+            if (priority2Cnt > 0)
+            {
+                Console.WriteLine($"priority 2 average score is: {priority2ScoreAcc / priority2Cnt}");
+            }
+            else
+            {
+                Console.WriteLine($"no reports for priority 2.");
+            }
+            
+            if (priority3Cnt > 0)
+            {
+                Console.WriteLine($"priority 3 average score is: {priority3ScoreAcc / priority3Cnt}");
+            }
+            else
+            {
+                Console.WriteLine($"no reports for priority 3.");
+            }
+            
+            if (priority4Cnt > 0)
+            {
+                Console.WriteLine($"priority 4 average score is: {priority4ScoreAcc / priority4Cnt}");
+            }
+            else
+            {
+                Console.WriteLine($"no reports for priority 4.");
+            }
+            
+            if (priority5Cnt > 0)
+            {
+                Console.WriteLine($"priority 5 average score is: {priority5ScoreAcc / priority5Cnt}");
+            }
+            else
+            {
+                Console.WriteLine($"no reports for priority 5.");
+            }
+            Console.WriteLine("===================================\n");
+
+
+        }
 
 
         static void Main()
         {
             DebugPrinting("hello from main");
 
-            string[]? x = LoadFile();
+            string[]? Lines = LoadFile();
 
             string[] UnitNameArray = new string[ARRAY_SIZE];
             ReportType[] reportTypeArray = new ReportType[ARRAY_SIZE];
@@ -398,13 +492,16 @@ namespace reportFile
             Status[] StatusArray = new Status[ARRAY_SIZE];
 
             int validRecords = 0;
-            int invalidRecords; // TODO: use it
+            int invalidRecords = 0; // TODO: use it
 
+            if (Lines == null)
+            {
+                Console.WriteLine("No records found.");
+                return;
+            }
 
-            ProcessReports(x, ref validRecords, UnitNameArray, reportTypeArray, PriorityArray, ScoreArray, StatusArray);
+            ProcessReports(Lines, ref validRecords, UnitNameArray, reportTypeArray, PriorityArray, ScoreArray, StatusArray);
 
-            Console.WriteLine("============================");
-            ArrayPrint(UnitNameArray, validRecords);
 
             double average = CalculateAverage(ScoreArray, validRecords);
             Console.WriteLine($"{average:F2}");
@@ -418,18 +515,15 @@ namespace reportFile
             int cnt_by_type = CountByType(reportTypeArray, validRecords, "anaLyze");
             Console.WriteLine("cnt_by_type: " + cnt_by_type);
 
-            Console.WriteLine("============================");
             DisplayBasicStatistics(ScoreArray, validRecords);
 
-            Console.WriteLine("============================");
             DisplayStatusCounts(StatusArray, validRecords);
 
-            Console.WriteLine("============================");
             DisplayTypeCounts(reportTypeArray, validRecords);
 
+            DisplayHighestPriorityApproved(UnitNameArray, reportTypeArray, PriorityArray, ScoreArray, StatusArray, validRecords);
 
-            Console.WriteLine("============================");
-            DisplayHighestPriorityApproved(UnitNameArray, reportTypeArray, PriorityArray, ScoreArray, StatusArray, validRecords);            
+            DisplayAverageByPriority(PriorityArray, ScoreArray, validRecords);
 
 
         }
