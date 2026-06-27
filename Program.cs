@@ -96,7 +96,7 @@ namespace reportFile
         }
 
 
-        static void ProcessReports(string[] allLinesReport, ref int validRecords, string[] unitArr, ReportType[] reportArr, int[] priorityArr, double[] scoreArr, Status[] statusArr )
+        static void ProcessReports(string[] allLinesReport, ref int validRecords, ref int invalidRecords, string[] unitArr, ReportType[] reportArr, int[] priorityArr, double[] scoreArr, Status[] statusArr )
         {
             //int sumValidRecords = 0; // also used to know the index of last report exist
 
@@ -116,7 +116,7 @@ namespace reportFile
                 if (oneLine.Length != 5)
                 {
                     Console.WriteLine($"invalid record. line #:{i + 1}");
-                    isVAlid = false;
+                    invalidRecords += 1;
                     continue;
                 }
 
@@ -160,9 +160,9 @@ namespace reportFile
                 if (!isVAlid)
                 {
                     Console.WriteLine(invalidRecordsMessage);
+                    invalidRecords += 1;
                     continue;
                 }
-
                 
 
                 addToArray(Unit, unitArr, validRecords);
@@ -173,11 +173,11 @@ namespace reportFile
 
                 validRecords += 1;
 
-                Console.WriteLine($"Unit {Unit}, Report {Report}, Priority {Priority} , Score {Score}, status {status}");
+                Console.WriteLine($"Unit: {Unit}, Report: {Report}, Priority: {Priority} , Score: {Score}, status: {status}");
                 Console.WriteLine($"Valid record processed.");
 
-                // UNDONE:
             }
+            Console.WriteLine($"valid records: {validRecords}.\ninvalid records: {invalidRecords}");
         }
 
 
@@ -481,10 +481,8 @@ namespace reportFile
 
         static void Main()
         {
-            DebugPrinting("hello from main");
-
             string[]? Lines = LoadFile();
-
+            
             string[] UnitNameArray = new string[ARRAY_SIZE];
             ReportType[] reportTypeArray = new ReportType[ARRAY_SIZE];
             int[] PriorityArray = new int[ARRAY_SIZE];
@@ -492,7 +490,7 @@ namespace reportFile
             Status[] StatusArray = new Status[ARRAY_SIZE];
 
             int validRecords = 0;
-            int invalidRecords = 0; // TODO: use it
+            int invalidRecords = 0;
 
             if (Lines == null)
             {
@@ -500,20 +498,7 @@ namespace reportFile
                 return;
             }
 
-            ProcessReports(Lines, ref validRecords, UnitNameArray, reportTypeArray, PriorityArray, ScoreArray, StatusArray);
-
-
-            double average = CalculateAverage(ScoreArray, validRecords);
-            Console.WriteLine($"{average:F2}");
-
-            double minscore = FindMinScore(ScoreArray, validRecords);
-            Console.WriteLine(minscore);
-
-            int cnt_by_stat = CountByStatus(StatusArray, validRecords, "Pending");
-            Console.WriteLine("cnt_by_stat: " + cnt_by_stat);
-
-            int cnt_by_type = CountByType(reportTypeArray, validRecords, "anaLyze");
-            Console.WriteLine("cnt_by_type: " + cnt_by_type);
+            ProcessReports(Lines, ref validRecords, ref invalidRecords, UnitNameArray, reportTypeArray, PriorityArray, ScoreArray, StatusArray);
 
             DisplayBasicStatistics(ScoreArray, validRecords);
 
@@ -525,7 +510,7 @@ namespace reportFile
 
             DisplayAverageByPriority(PriorityArray, ScoreArray, validRecords);
 
-
+            
         }
     }
 }
